@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nike. Just Do It. Nike GB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+<!-- Figma capture. Dormant unless the URL carries #figmacapture=... -->
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+
+<!-- Amplitude Unified SDK (CDN) -->
+<script src="https://cdn.amplitude.com/script/e06fdfface9a81322f7a2bdaa2084942.js"></script>
+<script>
+  window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+
+  /* One init only. In Browser SDK 2.x a second init() is a silent no-op:
+     the first call wins, the later config is discarded, and nothing is
+     logged to warn you. The CDN loader above is keyed to this project, so
+     the key here must match it. */
+  window.amplitude.init('e06fdfface9a81322f7a2bdaa2084942', {
+    fetchRemoteConfig: true,           // remote SDK config from Amplitude
+    autocapture: {
+      attribution: true,               // UTM / referrer attribution events
+      pageViews: true,                 // SPA route changes + initial load
+      sessions: false,                 // Session start / end events
+      formInteractions: true,          // Form starts + submits
+      fileDownloads: false,            // Downloads of common file types
+      elementInteractions: true,       // Click + change on instrumented els
+      frustrationInteractions: true,   // Rage clicks, dead clicks
+      pageUrlEnrichment: true,         // Adds path / search to event props
+      networkTracking: true,           // XHR + fetch request events
+      webVitals: true                  // CWV (LCP, INP, CLS) on page hide
+    }
+  });
+</script>
+
+<style>
+:root {
+  --black: #111111;
+  --grey-900: #757575;
+  --grey-500: #8d8d8d;
+  --grey-300: #e5e5e5;
+  --grey-100: #f5f5f5;
+  --red: #d43f21;
+  --max: 1440px;
+  --header-h: 60px;
+}
+
+/* ---------- Product card design tokens ----------
+   The product card is the component redesigned live in the Figma session.
+   Every visual decision is a token, so applying a direction from Figma is a
+   token swap rather than a rewrite of the card rules.
+   Presenter fallback: ?card=editorial|commerce|premium|playful
+   ------------------------------------------------------------------------ */
+:root {
+  --card-bg: transparent;
+  --card-radius: 0px;
+  --card-pad: 0px;
+  --card-border: 0 solid transparent;
+  --card-shadow: none;
+  --card-lift: 0px;
+
+  --card-media-ratio: 1 / 1;
+  --card-media-bg: var(--grey-100);
+  --card-media-radius: 0px;
+  --card-media-zoom: 1.04;
+
+  --card-flag-bg: #ffffff;
+  --card-flag-fg: var(--black);
+  --card-flag-size: 12px;
+  --card-flag-weight: 500;
+  --card-flag-radius: 4px;
+  --card-flag-transform: none;
+
+  --card-body-pad: 14px 2px 0;
+  --card-body-align: left;
+
+  --card-tag-color: var(--red);
+  --card-tag-size: 15px;
+  --card-tag-transform: none;
+  --card-tag-tracking: 0;
+
+  --card-name-color: var(--black);
+  --card-name-size: 15px;
+  --card-name-weight: 500;
+  --card-name-transform: none;
+  --card-name-tracking: 0;
+  --card-name-leading: 1.4;
+
+  --card-sub-color: var(--grey-900);
+  --card-sub-size: 15px;
+
+  --card-price-color: var(--black);
+  --card-price-size: 15px;
+  --card-price-weight: 500;
+  --card-price-gap: 8px;
+  --card-price-justify: flex-start;
+
+  --card-cta-bg: #ffffff;
+  --card-cta-fg: var(--black);
+  --card-cta-border: 1px solid var(--grey-300);
+  --card-cta-radius: 100px;
+  --card-cta-pad: 9px 18px;
+  --card-cta-size: 14px;
+  --card-cta-weight: 500;
+  --card-cta-width: auto;
+  --card-cta-decoration: none;
+  --card-cta-bg-hover: var(--grey-100);
+  --card-cta-border-hover: 1px solid var(--black);
+}
+
+* { box-sizing: border-box; }
+
+/* Overlays below set an explicit display, which would otherwise beat [hidden]. */
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--black);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; margin: 0; padding: 0; }
+button { font: inherit; cursor: pointer; }
+h1, h2, h3, h4, h5 { margin: 0; }
+
+/* ---------- Utility bar ---------- */
+.utility-bar {
+  background: var(--grey-100);
+  font-size: 12px;
+}
+.utility-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  height: 36px;
+  padding: 0 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.jordan-mark svg { fill: var(--black); display: block; }
+.convo-mark { font-weight: 700; letter-spacing: -0.02em; font-size: 13px; }
+.utility-links {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.utility-links a:hover { color: var(--grey-900); }
+.sep { color: var(--grey-300); }
+
+/* ---------- Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: #fff;
+  height: var(--header-h);
+  /* Full-bleed bar, but contents stay aligned to the 1440px content column. */
+  padding: 0 max(36px, calc((100vw - var(--max)) / 2 + 36px));
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: transparent;
+}
+.header.scrolled { box-shadow: 0 1px 0 var(--grey-300); }
+
+.logo svg { fill: var(--black); display: block; }
+
+.primary-nav { margin: 0 auto; }
+.primary-nav ul { display: flex; gap: 8px; }
+.primary-nav a {
+  display: block;
+  padding: 20px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+.primary-nav a::after {
+  content: "";
+  position: absolute;
+  left: 12px; right: 12px; bottom: 12px;
+  height: 2px;
+  background: var(--black);
+  transform: scaleX(0);
+  transition: transform 0.18s ease;
+}
+.primary-nav li.active a::after,
+.primary-nav a:hover::after { transform: scaleX(1); }
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--grey-100);
+  border-radius: 100px;
+  padding: 0 16px;
+  height: 40px;
+  width: 180px;
+  transition: width 0.2s ease;
+}
+.search:focus-within { width: 280px; background: var(--grey-300); }
+.search svg { fill: var(--black); flex: none; }
+.search input {
+  border: 0;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 15px;
+}
+.search-suggest {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+  padding: 8px;
+  z-index: 5;
+}
+.search-suggest button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.search-suggest button:hover { background: var(--grey-100); }
+
+.icon-btn {
+  position: relative;
+  border: 0;
+  background: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--black);
+}
+.icon-btn:hover { background: var(--grey-100); }
+.icon-btn svg { fill: none; }
+.badge {
+  position: absolute;
+  top: 4px; right: 2px;
+  min-width: 16px; height: 16px;
+  border-radius: 8px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+}
+
+/* ---------- Mega menu ---------- */
+.mega {
+  position: absolute;
+  top: var(--header-h);
+  left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--grey-300);
+  z-index: 61;
+  animation: fade 0.15s ease;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.mega-inner {
+  padding: 32px max(36px, calc((100vw - var(--max)) / 2 + 36px)) 44px;
+  display: flex;
+  gap: 72px;
+}
+.mega-col h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.mega-col a {
+  display: block;
+  font-size: 15px;
+  color: var(--grey-900);
+  padding: 4px 0;
+}
+.mega-col a:hover { color: var(--black); }
+.mega-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 50;
+}
+
+/* ---------- Promo ---------- */
+.promo {
+  background: var(--grey-100);
+  text-align: center;
+  padding: 26px 20px 34px;
+}
+.promo h2 { font-size: 15px; font-weight: 500; }
+.promo p { font-size: 13px; color: var(--grey-900); margin: 6px 0 0; }
+.promo a { text-decoration: underline; color: var(--black); font-weight: 500; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; }
+.hero-media {
+  height: min(78vh, 700px);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.45)),
+    linear-gradient(120deg, #2b2b2b, #6b6b6b 45%, #1c1c1c),
+    #2b2b2b;
+  background-size: cover, cover, cover;
+  background-position: center;
+}
+.hero-copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 36px 56px;
+  max-width: var(--max);
+  margin: 0 auto;
+  color: #fff;
+}
+.eyebrow {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  letter-spacing: 0.02em;
+}
+.eyebrow.light { color: rgba(255,255,255,0.85); }
+.hero h1 {
+  font-size: clamp(56px, 9vw, 118px);
+  line-height: 0.86;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+.hero-sub {
+  font-size: 17px;
+  max-width: 420px;
+  margin: 0 0 22px;
+  color: rgba(255,255,255,0.9);
+}
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  border: 0;
+  border-radius: 100px;
+  padding: 13px 26px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: opacity 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn-dark { background: var(--black); color: #fff; }
+.btn-dark:hover { background: #3d3d3d; }
+.btn-light { background: #fff; color: var(--black); }
+.btn-light:hover { background: var(--grey-300); }
+.btn-ghost {
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.28); }
+.btn.full { width: 100%; }
+.drawer .btn-ghost {
+  background: #fff;
+  color: var(--black);
+  border: 1px solid var(--grey-300);
+}
+.drawer .btn-ghost:hover { background: var(--grey-100); }
+
+/* ---------- Pills ---------- */
+.pill-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 22px 36px;
+  max-width: var(--max);
+  margin: 0 auto;
+  scrollbar-width: none;
+}
+.pill-row::-webkit-scrollbar { display: none; }
+.pill {
+  flex: none;
+  border: 1px solid var(--grey-300);
+  border-radius: 100px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pill:hover { border-color: var(--black); background: var(--grey-100); }
+
+/* ---------- Shelf / carousel ---------- */
+.shelf {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 26px 36px 44px;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+.shelf-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.shelf-head h2 { font-size: 22px; font-weight: 500; }
+.shelf-nav { display: flex; gap: 10px; }
+.round-btn {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--grey-100);
+  display: grid;
+  place-items: center;
+  color: var(--black);
+}
+.round-btn:hover { background: var(--grey-300); }
+.round-btn svg { fill: none; }
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 3 * 16px) / 3.15);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.track::-webkit-scrollbar { display: none; }
+
+.card {
+  scroll-snap-align: start;
+  background: var(--card-bg);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card:hover { transform: translateY(calc(-1 * var(--card-lift))); }
+.card-media {
+  position: relative;
+  aspect-ratio: var(--card-media-ratio);
+  background: var(--card-media-bg);
+  border-radius: var(--card-media-radius);
+  overflow: hidden;
+}
+.card-media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.card:hover .card-media img { transform: scale(var(--card-media-zoom)); }
+.card-flag {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--card-flag-bg);
+  color: var(--card-flag-fg);
+  font-size: var(--card-flag-size);
+  font-weight: var(--card-flag-weight);
+  text-transform: var(--card-flag-transform);
+  letter-spacing: var(--card-tag-tracking);
+  padding: 5px 10px;
+  border-radius: var(--card-flag-radius);
+}
+.card-fav {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255,255,255,0.9);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.card:hover .card-fav, .card-fav.on { opacity: 1; }
+.card-fav svg { fill: none; stroke: var(--black); }
+.card-fav.on svg { fill: var(--black); }
+.card-body { padding: var(--card-body-pad); text-align: var(--card-body-align); }
+.card-tag {
+  font-size: var(--card-tag-size);
+  color: var(--card-tag-color);
+  font-weight: 500;
+  text-transform: var(--card-tag-transform);
+  letter-spacing: var(--card-tag-tracking);
+  margin-bottom: 2px;
+}
+.card-name {
+  font-size: var(--card-name-size);
+  font-weight: var(--card-name-weight);
+  color: var(--card-name-color);
+  text-transform: var(--card-name-transform);
+  letter-spacing: var(--card-name-tracking);
+  line-height: var(--card-name-leading);
+}
+.card-sub { font-size: var(--card-sub-size); color: var(--card-sub-color); }
+.card-price {
+  margin-top: 8px;
+  font-size: var(--card-price-size);
+  font-weight: var(--card-price-weight);
+  color: var(--card-price-color);
+  display: flex;
+  align-items: baseline;
+  justify-content: var(--card-price-justify);
+  gap: var(--card-price-gap);
+}
+.card-price s { color: var(--grey-500); font-weight: 400; }
+.card-price .off { color: #007d48; font-weight: 500; font-size: 14px; }
+.card-add {
+  margin-top: 10px;
+  border: var(--card-cta-border);
+  background: var(--card-cta-bg);
+  color: var(--card-cta-fg);
+  border-radius: var(--card-cta-radius);
+  padding: var(--card-cta-pad);
+  font-size: var(--card-cta-size);
+  font-weight: var(--card-cta-weight);
+  width: var(--card-cta-width);
+  text-decoration: var(--card-cta-decoration);
+  text-underline-offset: 4px;
+}
+/* Hover is a token, not a blanket filter: darkening works for a light button
+   but is invisible on a dark one, which needs to lighten instead. */
+.card-add:hover {
+  background: var(--card-cta-bg-hover);
+  border: var(--card-cta-border-hover);
+}
+
+/* ---------- Card directions ----------
+   Populated from the Figma variants canvas. Applied by setting
+   data-card-theme on <html>. Default (no attribute) is the current design.
+   -------------------------------------- */
+[data-card-theme="editorial"] {
+  --card-media-ratio: 3 / 4;
+  --card-media-zoom: 1.08;
+  --card-body-pad: 18px 0 0;
+  --card-name-size: 20px;
+  --card-name-weight: 700;
+  --card-name-tracking: -0.02em;
+  --card-name-leading: 1.15;
+  --card-sub-size: 14px;
+  --card-tag-color: var(--black);
+  --card-tag-size: 12px;
+  --card-tag-transform: uppercase;
+  --card-tag-tracking: 0.12em;
+  --card-flag-bg: var(--black);
+  --card-flag-fg: #ffffff;
+  --card-flag-size: 11px;
+  --card-flag-transform: uppercase;
+  --card-price-size: 16px;
+  --card-cta-bg: transparent;
+  --card-cta-border: 0;
+  --card-cta-pad: 8px 0;
+  --card-cta-decoration: underline;
+  --card-cta-bg-hover: transparent;
+  --card-cta-border-hover: 0;
+}
+[data-card-theme="commerce"] {
+  --card-bg: #ffffff;
+  --card-border: 1px solid #d0d0d0;
+  --card-radius: 8px;
+  --card-pad: 8px;
+  --card-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  --card-lift: 2px;
+  --card-media-radius: 6px;
+  --card-body-pad: 12px 6px 6px;
+  --card-name-size: 14px;
+  --card-name-weight: 700;
+  --card-sub-size: 13px;
+  --card-tag-size: 11px;
+  --card-tag-transform: uppercase;
+  --card-tag-tracking: 0.08em;
+  --card-price-size: 16px;
+  --card-price-weight: 700;
+  --card-flag-bg: var(--red);
+  --card-flag-fg: #ffffff;
+  --card-flag-size: 11px;
+  --card-flag-radius: 3px;
+  --card-cta-bg: var(--black);
+  --card-cta-fg: #ffffff;
+  --card-cta-border: 0;
+  --card-cta-pad: 10px 18px;
+  --card-cta-width: 100%;
+  --card-cta-bg-hover: #3d3d3d;
+  --card-cta-border-hover: 0;
+}
+[data-card-theme="premium"] {
+  --card-bg: #141414;
+  --card-radius: 14px;
+  --card-pad: 12px;
+  --card-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --card-lift: 4px;
+  --card-media-bg: #1f1f1f;
+  --card-media-radius: 10px;
+  --card-media-ratio: 4 / 5;
+  --card-body-pad: 16px 6px 8px;
+  --card-name-color: #ffffff;
+  --card-name-size: 16px;
+  --card-name-weight: 600;
+  --card-sub-color: #9a9a9a;
+  --card-sub-size: 13px;
+  --card-tag-color: #d9b45b;
+  --card-tag-size: 11px;
+  --card-tag-transform: uppercase;
+  --card-tag-tracking: 0.14em;
+  --card-price-color: #ffffff;
+  --card-price-size: 16px;
+  --card-flag-bg: rgba(255,255,255,0.14);
+  --card-flag-fg: #ffffff;
+  --card-flag-size: 11px;
+  --card-flag-radius: 100px;
+  --card-cta-bg: transparent;
+  --card-cta-fg: #ffffff;
+  --card-cta-border: 1px solid rgba(255,255,255,0.35);
+  --card-cta-width: 100%;
+  --card-cta-bg-hover: rgba(255,255,255,0.14);
+  --card-cta-border-hover: 1px solid rgba(255,255,255,0.7);
+}
+[data-card-theme="playful"] {
+  --card-bg: #fff4e6;
+  --card-radius: 24px;
+  --card-pad: 14px;
+  --card-shadow: 0 6px 0 #ffd7ad;
+  --card-lift: 3px;
+  --card-media-bg: #ffe2bd;
+  --card-media-radius: 18px;
+  --card-body-pad: 16px 8px 8px;
+  --card-body-align: center;
+  --card-price-justify: center;
+  --card-name-size: 17px;
+  --card-name-weight: 800;
+  --card-name-tracking: -0.01em;
+  --card-sub-color: #7a5228;
+  --card-tag-color: #c2410c;
+  --card-tag-size: 11px;
+  --card-tag-transform: uppercase;
+  --card-tag-tracking: 0.1em;
+  --card-flag-bg: #c2410c;
+  --card-flag-fg: #ffffff;
+  --card-flag-radius: 100px;
+  --card-cta-bg: #c2410c;
+  --card-cta-fg: #ffffff;
+  --card-cta-border: 0;
+  --card-cta-weight: 700;
+  --card-cta-width: 100%;
+  --card-cta-bg-hover: #a3380a;
+  --card-cta-border-hover: 0;
+}
+
+/* ---------- Editorial split ---------- */
+.split {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 8px 36px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.split-card {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.sc-1 { background: linear-gradient(140deg, #1d1d1d, #4a4a4a 60%, #101010); }
+.sc-2 { background: linear-gradient(140deg, #3b2a1f, #a8683a 55%, #241813); }
+.split-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 60%);
+}
+.split-copy { position: relative; z-index: 1; padding: 36px; color: #fff; }
+.split-copy h3 {
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  margin: 0 0 18px;
+}
+
+/* ---------- Sport grid ---------- */
+.sport-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.sport {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: flex-end;
+  padding: 22px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  overflow: hidden;
+}
+.sport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0) 55%);
+  transition: background 0.25s ease;
+}
+.sport:hover::after { background: linear-gradient(0deg, rgba(0,0,0,0.75), rgba(0,0,0,0.1) 65%); }
+.sport span { position: relative; z-index: 1; }
+.sport-run { background: linear-gradient(150deg, #0b3d5c, #3f8fb5 60%, #06202f); }
+.sport-ball { background: linear-gradient(150deg, #14361c, #4c9d4f 60%, #0a1d0e); }
+.sport-gym { background: linear-gradient(150deg, #3a1d3f, #9a4fa1 60%, #1e0f21); }
+.sport-hoop { background: linear-gradient(150deg, #5a2410, #d1622a 60%, #2c1108); }
+
+/* ---------- Link columns ---------- */
+.link-columns {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 20px 36px 56px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.link-columns h4 { font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+.link-columns a { font-size: 14px; color: var(--grey-900); line-height: 2; }
+.link-columns a:hover { color: var(--black); }
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--black);
+  color: #fff;
+  padding: 44px 0 28px;
+}
+.footer-top {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 36px;
+}
+/* Same four-track grid as .link-columns so the two blocks stack in alignment. */
+.footer-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.footer h5 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.footer li a { font-size: 14px; color: var(--grey-500); line-height: 2.1; }
+.footer li a:hover { color: #fff; }
+.footer-locale {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  white-space: nowrap;
+}
+.footer-locale svg { stroke: #fff; fill: none; }
+.footer-bottom-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-bottom-left p { margin: 0; }
+.footer-bottom {
+  max-width: var(--max);
+  margin: 40px auto 0;
+  padding: 20px 36px 0;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--grey-500);
+}
+.footer-bottom ul { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-bottom a:hover { color: #fff; }
+
+/* ---------- Bag drawer ---------- */
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 80;
+  animation: fade 0.2s ease;
+}
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100%;
+  width: min(420px, 100%);
+  background: #fff;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 30px rgba(0,0,0,0.15);
+  animation: slide-in 0.25s ease;
+}
+@keyframes slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--grey-300);
+}
+.drawer-head h3 { font-size: 20px; font-weight: 500; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 8px 20px; }
+.drawer-empty {
+  text-align: center;
+  color: var(--grey-900);
+  padding: 60px 20px;
+  font-size: 15px;
+}
+.bag-item {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--grey-300);
+}
+.bag-item img {
+  width: 78px; height: 78px;
+  object-fit: cover;
+  background: var(--grey-100);
+}
+.bag-item h4 { font-size: 15px; font-weight: 500; }
+.bag-item p { margin: 2px 0; font-size: 13px; color: var(--grey-900); }
+.bag-item .no-size { color: var(--red); font-weight: 500; }
+.bag-item .line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--grey-300);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.qty button {
+  border: 0;
+  background: none;
+  width: 30px; height: 28px;
+  font-size: 16px;
+  line-height: 1;
+}
+.qty button:hover { background: var(--grey-100); }
+.qty span { min-width: 22px; text-align: center; font-size: 14px; }
+.remove {
+  border: 0;
+  background: none;
+  font-size: 13px;
+  color: var(--grey-900);
+  text-decoration: underline;
+  padding: 0;
+}
+.remove:hover { color: var(--black); }
+.drawer-foot {
+  border-top: 1px solid var(--grey-300);
+  padding: 18px 20px 22px;
+  display: grid;
+  gap: 10px;
+}
+.drawer-foot .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}
+.drawer-foot .row.muted { color: var(--grey-900); font-size: 13px; }
+
+/* ---------- Modal ---------- */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: fade 0.15s ease;
+}
+.modal {
+  position: relative;
+  background: #fff;
+  width: min(440px, 100%);
+  padding: 40px 36px 36px;
+  text-align: center;
+}
+.modal-close { position: absolute; top: 10px; right: 10px; }
+.modal-swoosh { fill: var(--black); margin-bottom: 18px; }
+.modal h2 {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 22px;
+}
+.field { position: relative; display: block; margin-bottom: 14px; }
+.field input {
+  width: 100%;
+  height: 56px;
+  padding: 18px 14px 4px;
+  border: 1px solid var(--grey-500);
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+}
+.field input:focus { border-color: var(--black); }
+.field span {
+  position: absolute;
+  left: 14px; top: 18px;
+  color: var(--grey-900);
+  font-size: 15px;
+  pointer-events: none;
+  transition: all 0.15s ease;
+}
+.field input:focus + span,
+.field input:not(:placeholder-shown) + span { top: 7px; font-size: 11px; }
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--grey-900);
+  margin-bottom: 14px;
+}
+.fineprint { font-size: 12px; color: var(--grey-900); margin: 0 0 16px; line-height: 1.6; }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 100px;
+  font-size: 14px;
+  z-index: 120;
+  animation: rise 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .track { grid-auto-columns: calc((100% - 2 * 16px) / 2.2); }
+  .sport-grid { grid-template-columns: repeat(2, 1fr); }
+  .link-columns, .footer-cols { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+  .header, .shelf, .split, .pill-row, .link-columns,
+  .utility-inner, .footer-top, .footer-bottom { padding-left: 18px; padding-right: 18px; }
+  .primary-nav { display: none; }
+  .search { width: 44px; padding: 0 12px; }
+  .search:focus-within { width: 220px; }
+  .hero-copy { padding: 0 18px 36px; }
+  .split { grid-template-columns: 1fr; }
+  .track { grid-auto-columns: 78%; }
+  .footer-cols { gap: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ UTILITY BAR ============ -->
+<div class="utility-bar">
+  <div class="utility-inner">
+    <a href="#" class="jordan-mark" aria-label="Jordan">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M18.4 3.1c-1.9-.4-4.2.6-6.4 2.4C9.5 7.6 7.6 10.3 6 12.6c-1.1 1.6-2 3-2.7 3.6-.4.4-.7.4-.9.3-.2-.1-.2-.4 0-.9.5-1.3 2.1-3.3 3.6-4.8-2.3 1.8-4.4 4.3-5 6.2-.4 1.3.1 2.3 1.2 2.6 1.3.4 3-.5 5.1-2.3 2.4-2 4.5-4.8 6.2-7.1 1.2-1.6 2.2-2.9 3-3.5.5-.4.9-.5 1.1-.3.2.2.1.6-.2 1.1-.6 1.1-2 2.7-3.3 3.9 2.1-1.5 4.1-3.8 4.7-5.6.4-1.2-.1-2.3-1.4-2.7z"/></svg>
+    </a>
+    <a href="#" class="convo-mark" aria-label="Converse">Converse</a>
+    <nav class="utility-links" aria-label="Utility">
+      <a href="#">Find a Store</a>
+      <span class="sep">|</span>
+      <a href="#">Help</a>
+      <span class="sep">|</span>
+      <a href="#" data-modal-open="join">Join Us</a>
+      <span class="sep">|</span>
+      <a href="#" data-modal-open="signin">Sign In</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+  <a href="#" class="logo" aria-label="Nike Home">
+    <svg viewBox="0 0 69 32" width="58" height="27" aria-hidden="true">
+      <path d="M68.56 4L18.4 25.36q-6.24 2.64-10.48 2.64-4.8 0-6.96-3.36Q-.32 22.56 0 19.52q.32-3.04 2.24-6.48 1.6-2.72 4.96-6.96-1.6 2.72-2.24 4.8-1.2 3.84.72 5.6 1.36 1.28 4.08 1.28 2.24 0 5.04-.8L68.56 4z"/>
+    </svg>
+  </a>
+
+  <nav class="primary-nav" aria-label="Main">
+    <ul>
+      <li data-menu="new"><a href="#">New &amp; Featured</a></li>
+      <li data-menu="men"><a href="#">Men</a></li>
+      <li data-menu="women"><a href="#">Women</a></li>
+      <li data-menu="kids"><a href="#">Kids</a></li>
+      <li data-menu="sale"><a href="#">Sale</a></li>
+      <li data-menu="snkrs"><a href="#">SNKRS</a></li>
+    </ul>
+  </nav>
+
+  <div class="header-actions">
+    <form class="search" role="search" onsubmit="return false;">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 015.92 12.11l4.24 4.24-1.41 1.41-4.24-4.24A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"/></svg>
+      <input type="search" id="search-input" placeholder="Search" aria-label="Search products" autocomplete="off" />
+      <div class="search-suggest" id="search-suggest" hidden></div>
+    </form>
+    <button class="icon-btn" aria-label="Favourites" id="fav-btn">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21s-7.5-4.9-9.4-9A5.5 5.5 0 0112 5.6 5.5 5.5 0 0121.4 12c-1.9 4.1-9.4 9-9.4 9z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span class="badge" id="fav-count" hidden>0</span>
+    </button>
+    <button class="icon-btn" aria-label="Bag" id="bag-btn">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 7V6a4 4 0 118 0v1h3.2l1 14H3.8l1-14H8zm2 0h4V6a2 2 0 10-4 0v1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      <span class="badge" id="bag-count" hidden>0</span>
+    </button>
+  </div>
+
+  <!-- Mega menu -->
+  <div class="mega" id="mega" hidden>
+    <div class="mega-inner" id="mega-inner"></div>
+  </div>
+</header>
+
+<div class="mega-scrim" id="mega-scrim" hidden></div>
+
+<!-- ============ PROMO STRIP ============ -->
+<section class="promo">
+  <h2>Free Delivery for Members</h2>
+  <p>Become a Nike Member for fast free delivery on every order. <a href="#" data-modal-open="join">Join Us</a> · <a href="#" data-modal-open="signin">Sign In</a></p>
+</section>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-media" role="img" aria-label="Athlete running at dawn"></div>
+    <div class="hero-copy">
+      <p class="eyebrow">Nike Air Max Dn8</p>
+      <h1>FEEL<br />THE<br />UNREAL</h1>
+      <p class="hero-sub">Dynamic Air. Unreal energy. The next step in cushioning is here.</p>
+      <div class="hero-cta">
+        <a href="#trending" class="btn btn-dark">Shop</a>
+        <a href="#" class="btn btn-ghost">Explore Air Max</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUICK CATEGORY PILLS ============ -->
+  <nav class="pill-row" aria-label="Shop by category">
+    <a href="#" class="pill">New Arrivals</a>
+    <a href="#" class="pill">Air Max</a>
+    <a href="#" class="pill">Running</a>
+    <a href="#" class="pill">Football</a>
+    <a href="#" class="pill">Basketball</a>
+    <a href="#" class="pill">Training &amp; Gym</a>
+    <a href="#" class="pill">Sportswear</a>
+    <a href="#" class="pill">Sale</a>
+  </nav>
+
+  <!-- ============ TRENDING CAROUSEL ============ -->
+  <section class="shelf" id="trending">
+    <div class="shelf-head">
+      <h2>Trending Now</h2>
+      <div class="shelf-nav">
+        <button class="round-btn" data-scroll="trending-track" data-dir="-1" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="round-btn" data-scroll="trending-track" data-dir="1" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="track" id="trending-track"></div>
+  </section>
+
+  <!-- ============ EDITORIAL SPLIT ============ -->
+  <section class="split">
+    <article class="split-card sc-1">
+      <div class="split-copy">
+        <p class="eyebrow light">Members Only</p>
+        <h3>Early Access<br />Drops</h3>
+        <a href="#" class="btn btn-light">Join Us</a>
+      </div>
+    </article>
+    <article class="split-card sc-2">
+      <div class="split-copy">
+        <p class="eyebrow light">Running</p>
+        <h3>Pegasus<br />Premium</h3>
+        <a href="#" class="btn btn-light">Shop Running</a>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ SHOP BY SPORT ============ -->
+  <section class="shelf">
+    <div class="shelf-head">
+      <h2>Shop By Sport</h2>
+    </div>
+    <div class="sport-grid">
+      <a href="#" class="sport sport-run"><span>Running</span></a>
+      <a href="#" class="sport sport-ball"><span>Football</span></a>
+      <a href="#" class="sport sport-gym"><span>Training</span></a>
+      <a href="#" class="sport sport-hoop"><span>Basketball</span></a>
+    </div>
+  </section>
+
+  <!-- ============ NEW FOR YOU CAROUSEL ============ -->
+  <section class="shelf" id="new-for-you">
+    <div class="shelf-head">
+      <h2>New for You</h2>
+      <div class="shelf-nav">
+        <button class="round-btn" data-scroll="new-track" data-dir="-1" aria-label="Previous">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="round-btn" data-scroll="new-track" data-dir="1" aria-label="Next">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="track" id="new-track"></div>
+  </section>
+
+  <!-- ============ ICON LINK COLUMNS ============ -->
+  <section class="link-columns">
+    <div>
+      <h4>Icons</h4>
+      <ul>
+        <li><a href="#">Air Force 1</a></li>
+        <li><a href="#">Air Jordan 1</a></li>
+        <li><a href="#">Air Max Dn</a></li>
+        <li><a href="#">Dunk</a></li>
+        <li><a href="#">Blazer</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Shoes</h4>
+      <ul>
+        <li><a href="#">All Shoes</a></li>
+        <li><a href="#">Lifestyle</a></li>
+        <li><a href="#">Jordan</a></li>
+        <li><a href="#">Running</a></li>
+        <li><a href="#">Football</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Clothing</h4>
+      <ul>
+        <li><a href="#">All Clothing</a></li>
+        <li><a href="#">Tops &amp; T-Shirts</a></li>
+        <li><a href="#">Hoodies &amp; Sweatshirts</a></li>
+        <li><a href="#">Trousers &amp; Tights</a></li>
+        <li><a href="#">Shorts</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kids'</h4>
+      <ul>
+        <li><a href="#">Infant &amp; Toddler Shoes</a></li>
+        <li><a href="#">Kids' Shoes</a></li>
+        <li><a href="#">Kids' Jordan Shoes</a></li>
+        <li><a href="#">Kids' Basketball Shoes</a></li>
+        <li><a href="#">Kids' Clothing</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-cols">
+      <div>
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">Find a Store</a></li>
+          <li><a href="#">Become a Member</a></li>
+          <li><a href="#">Running Shoe Finder</a></li>
+          <li><a href="#">Send Us Feedback</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Help</h5>
+        <ul>
+          <li><a href="#">Get Help</a></li>
+          <li><a href="#">Order Status</a></li>
+          <li><a href="#">Delivery</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Nike</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Nike Apps</h5>
+        <ul>
+          <li><a href="#">Nike App</a></li>
+          <li><a href="#">Nike Run Club</a></li>
+          <li><a href="#">Nike Training Club</a></li>
+          <li><a href="#">SNKRS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      <span class="footer-locale">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+        <span>United Kingdom</span>
+      </span>
+      <p>&copy; 2026 Nike, Inc. All rights reserved — <em>demo mockup, not affiliated with Nike</em></p>
+    </div>
+    <ul>
+      <li><a href="#">Guides</a></li>
+      <li><a href="#">Terms of Sale</a></li>
+      <li><a href="#">Terms of Use</a></li>
+      <li><a href="#">Privacy &amp; Cookie Policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ============ BAG DRAWER ============ -->
+<div class="drawer-scrim" id="drawer-scrim" hidden></div>
+<aside class="drawer" id="bag-drawer" aria-label="Bag" hidden>
+  <div class="drawer-head">
+    <h3>Bag</h3>
+    <button class="icon-btn" id="bag-close" aria-label="Close bag">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="bag-items"></div>
+  <div class="drawer-foot">
+    <div class="row"><span>Subtotal</span><strong id="bag-subtotal">£0.00</strong></div>
+    <div class="row muted"><span>Delivery</span><span>Free for Members</span></div>
+    <button class="btn btn-dark full" id="checkout-btn">Checkout</button>
+    <button class="btn btn-ghost full" id="continue-btn">Continue Shopping</button>
+  </div>
+</aside>
+
+<!-- ============ AUTH MODAL ============ -->
+<div class="modal-scrim" id="modal-scrim" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="icon-btn modal-close" id="modal-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+    <svg class="modal-swoosh" viewBox="0 0 69 32" width="60" height="28" aria-hidden="true">
+      <path d="M68.56 4L18.4 25.36q-6.24 2.64-10.48 2.64-4.8 0-6.96-3.36Q-.32 22.56 0 19.52q.32-3.04 2.24-6.48 1.6-2.72 4.96-6.96-1.6 2.72-2.24 4.8-1.2 3.84.72 5.6 1.36 1.28 4.08 1.28 2.24 0 5.04-.8L68.56 4z"/>
+    </svg>
+    <h2 id="modal-title">Enter your email to join us or sign in.</h2>
+    <form id="auth-form">
+      <label class="field">
+        <input type="email" required placeholder=" " id="auth-email" />
+        <span>Email address</span>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" checked />
+        <span>Keep me signed in</span>
+      </label>
+      <p class="fineprint">By continuing, I agree to Nike's Privacy Policy and Terms of Use.</p>
+      <button type="submit" class="btn btn-dark full">Continue</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ==========================================================
+   Nike GB — homepage mockup
+   Plain HTML/CSS/JS. No build step, no dependencies.
+   ========================================================== */
+
+/* ---------- Product artwork -------------------------------
+   Self-contained SVG sneaker so the mockup renders offline.
+   ---------------------------------------------------------- */
+function shoeArt(base, accent, sole) {
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <ellipse cx="205" cy="296" rx="150" ry="14" fill="#000" opacity="0.07"/>
+  <path d="M58 252c8-40 48-62 92-68l52-40c16-11 33-4 35 15l5 44c46 6 88 22 114 43 8 6 11 14 11 22 0 11-9 19-21 19H80c-15 0-25-12-22-35z" fill="${base}"/>
+  <path d="M150 184l52-40c16-11 33-4 35 15l3 28c-30 4-60 3-90-3z" fill="${accent}" opacity="0.85"/>
+  <path d="M96 232c46 14 132 22 224 6-58 20-140 30-224 14z" fill="${accent}"/>
+  <path d="M62 262h305c0 11-9 19-21 19H80c-13 0-20-8-18-19z" fill="${sole}"/>
+  <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.9">
+    <path d="M168 196l30-16M180 210l30-16M192 224l30-16"/>
+  </g>
+  <circle cx="330" cy="248" r="6" fill="#fff" opacity="0.55"/>
+</svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.trim());
+}
+
+/* ---------- Catalogue ---------- */
+const PRODUCTS = [
+  { id: 'p1', tag: 'Just In',      name: 'Nike Air Max Dn8',            sub: "Men's Shoes",              price: 154.95, art: ['#e8e8e8', '#111111', '#c9c9c9'] },
+  { id: 'p2', tag: 'Member Access', name: 'Nike Pegasus Premium',        sub: "Women's Road Running",     price: 179.95, art: ['#2f6fd0', '#0d2f66', '#dfe7f5'] },
+  { id: 'p3', tag: 'Bestseller',   name: 'Nike Air Force 1 \'07',       sub: "Men's Shoes",              price: 114.95, art: ['#ffffff', '#e2e2e2', '#f0f0f0'] },
+  { id: 'p4', tag: 'Just In',      name: 'Nike Dunk Low Retro',         sub: "Men's Shoes",              price: 109.95, art: ['#c8102e', '#7d0a1d', '#f2f2f2'] },
+  { id: 'p5', tag: 'Sustainable',  name: 'Nike Vomero 18',              sub: "Women's Road Running",     price: 144.95, art: ['#5b3fa8', '#2d1e59', '#e7e2f5'] },
+  { id: 'p6', tag: 'Bestseller',   name: 'Nike Air Jordan 1 Mid',       sub: "Men's Shoes",              price: 124.95, art: ['#111111', '#c8102e', '#efefef'] },
+  { id: 'p7', tag: 'Just In',      name: 'Nike Mercurial Vapor 16',     sub: 'Firm-Ground Football Boot', price: 249.95, art: ['#00c389', '#04553d', '#0f0f0f'] },
+  { id: 'p8', tag: 'Sale',         name: 'Nike Court Vision Low',       sub: "Men's Shoes",              price: 47.97, was: 69.95, art: ['#f7f7f7', '#111111', '#e4e4e4'] },
+  { id: 'p9', tag: 'Just In',      name: 'Nike Sportswear Tech Fleece', sub: "Men's Hoodie",             price: 104.95, art: ['#4a4a4a', '#1b1b1b', '#dcdcdc'] },
+  { id: 'p10', tag: 'Bestseller',  name: 'Nike Pro Dri-FIT Tights',     sub: "Women's Training Tights",  price: 42.95, art: ['#111111', '#3d3d3d', '#d8d8d8'] },
+  { id: 'p11', tag: 'Member Access', name: 'Nike G.T. Cut 3',           sub: 'Basketball Shoes',         price: 169.95, art: ['#ff7a00', '#7a3a00', '#141414'] },
+  { id: 'p12', tag: 'Sale',        name: 'Nike Revolution 7',           sub: "Women's Road Running",     price: 41.97, was: 59.95, art: ['#f2c1d1', '#8c4f66', '#ffffff'] }
+];
+
+PRODUCTS.forEach(p => { p.img = shoeArt(...p.art); });
+
+const gbp = n => '£' + n.toFixed(2);
+
+/* ---------- Card rendering ---------- */
+function cardHTML(p) {
+  const price = p.was
+    ? `<div class="card-price">${gbp(p.price)} <s>${gbp(p.was)}</s> <span class="off">${Math.round((1 - p.price / p.was) * 100)}% off</span></div>`
+    : `<div class="card-price">${gbp(p.price)}</div>`;
+
+  return `
+    <article class="card" data-id="${p.id}">
+      <div class="card-media">
+        <span class="card-flag">${p.tag}</span>
+        <button class="card-fav" data-fav="${p.id}" aria-label="Favourite ${p.name}">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 21s-7.5-4.9-9.4-9A5.5 5.5 0 0112 5.6 5.5 5.5 0 0121.4 12c-1.9 4.1-9.4 9-9.4 9z" stroke-width="1.6"/></svg>
+        </button>
+        <img src="${p.img}" alt="${p.name}" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <div class="card-tag">${p.tag}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-sub">${p.sub}</div>
+        ${price}
+        <button class="card-add" data-add="${p.id}" data-source="product_card">Add to Bag</button>
+      </div>
+    </article>`;
+}
+
+document.getElementById('trending-track').innerHTML = PRODUCTS.slice(0, 8).map(cardHTML).join('');
+document.getElementById('new-track').innerHTML = PRODUCTS.slice(4).concat(PRODUCTS.slice(0, 2)).map(cardHTML).join('');
+
+/* ---------- Carousel arrows ---------- */
+document.querySelectorAll('[data-scroll]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const track = document.getElementById(btn.dataset.scroll);
+    track.scrollBy({ left: btn.dataset.dir * track.clientWidth * 0.8, behavior: 'smooth' });
+  });
+});
+
+/* ---------- Mega menu ---------- */
+const MENUS = {
+  new: [
+    { title: 'New & Featured', links: ['New Arrivals', 'Best Sellers', 'Member Exclusive', 'SNKRS Launch Calendar', 'Sale'] },
+    { title: 'Trending', links: ['Air Max Dn8', 'Tech Fleece', 'Retro Running', 'Football Kits', 'Nike Style By'] },
+    { title: 'Shop Icons', links: ['Air Force 1', 'Air Jordan 1', 'Dunk', 'Pegasus', 'Blazer'] }
+  ],
+  men: [
+    { title: 'Featured', links: ['New Releases', 'Bestsellers', 'Member Exclusive', 'Sale'] },
+    { title: 'Shoes', links: ['All Shoes', 'Lifestyle', 'Running', 'Football', 'Training & Gym', 'Basketball'] },
+    { title: 'Clothing', links: ['All Clothing', 'Tops & T-Shirts', 'Hoodies', 'Trousers', 'Shorts', 'Jackets'] },
+    { title: 'Shop By Sport', links: ['Running', 'Football', 'Basketball', 'Golf', 'Tennis'] }
+  ],
+  women: [
+    { title: 'Featured', links: ['New Releases', 'Bestsellers', 'Member Exclusive', 'Sale'] },
+    { title: 'Shoes', links: ['All Shoes', 'Lifestyle', 'Running', 'Training & Gym', 'Basketball'] },
+    { title: 'Clothing', links: ['All Clothing', 'Sports Bras', 'Tops & T-Shirts', 'Leggings', 'Shorts', 'Dresses'] },
+    { title: 'Collections', links: ['Nike Zenvy', 'Nike One', 'Nike Universa', 'Tech Fleece'] }
+  ],
+  kids: [
+    { title: 'Featured', links: ['New Releases', 'Bestsellers', 'Back to School', 'Sale'] },
+    { title: 'Shoes', links: ['All Shoes', 'Older Kids (7–15)', 'Younger Kids (3–7)', 'Baby & Toddler'] },
+    { title: 'Clothing', links: ['All Clothing', 'Tops & T-Shirts', 'Hoodies', 'Trousers', 'Shorts'] }
+  ],
+  sale: [
+    { title: 'Sale & Offers', links: ['Shop All Sale', 'Extra 25% Off Selected', 'Last Chance', 'Under £50'] },
+    { title: 'Sale By Category', links: ["Men's Sale", "Women's Sale", "Kids' Sale", 'Shoes on Sale', 'Clothing on Sale'] }
+  ],
+  snkrs: [
+    { title: 'SNKRS', links: ['Launch Calendar', 'In Stock Now', 'Coming Soon', 'Stories', 'Download the App'] }
+  ]
+};
+
+const mega = document.getElementById('mega');
+const megaInner = document.getElementById('mega-inner');
+const megaScrim = document.getElementById('mega-scrim');
+const navItems = document.querySelectorAll('.primary-nav li');
+let megaTimer;
+
+function openMega(key, li) {
+  clearTimeout(megaTimer);
+  megaInner.innerHTML = MENUS[key].map(col => `
+    <div class="mega-col">
+      <h4>${col.title}</h4>
+      ${col.links.map(l => `<a href="#">${l}</a>`).join('')}
+    </div>`).join('');
+  mega.hidden = false;
+  megaScrim.hidden = false;
+  navItems.forEach(n => n.classList.toggle('active', n === li));
+}
+
+function closeMega() {
+  megaTimer = setTimeout(() => {
+    mega.hidden = true;
+    megaScrim.hidden = true;
+    navItems.forEach(n => n.classList.remove('active'));
+  }, 120);
+}
+
+navItems.forEach(li => {
+  li.addEventListener('mouseenter', () => openMega(li.dataset.menu, li));
+  li.addEventListener('mouseleave', closeMega);
+});
+mega.addEventListener('mouseenter', () => clearTimeout(megaTimer));
+mega.addEventListener('mouseleave', closeMega);
+
+/* ---------- Header shadow on scroll ---------- */
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 4);
+});
+
+/* ---------- Toast ---------- */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toastEl.hidden = true; }, 2200);
+}
+
+/* ==========================================================
+   Analytics
+   Event and property names follow the taxonomy on the
+   "Search -> Add to Bag" page of the Figma file. Every event goes to
+   Amplitude via the Unified SDK and is mirrored to the console, so the
+   sequence can be read live without leaving the page.
+     window.__amplitude.funnel()  table of everything fired
+     window.__amplitude.reset()   clear the local mirror
+   ========================================================== */
+const ANALYTICS_LOG = [];
+
+function bagSnapshot() {
+  const entries = [...bag.values()];
+  return {
+    cart_item_count: entries.reduce((n, e) => n + e.qty, 0),
+    cart_value_gbp: Number(entries.reduce((n, e) => n + e.qty * e.product.price, 0).toFixed(2)),
+    cart_contents: entries.map(e => ({
+      product_id: e.product.id,
+      product_name: e.product.name,
+      product_price_gbp: e.product.price,
+      quantity: e.qty,
+      size: e.size || 'Not selected'
+    }))
+  };
+}
+
+function track(eventName, props) {
+  const payload = Object.assign({ event_name: eventName }, props, { event_time: new Date().toISOString() });
+  ANALYTICS_LOG.push(payload);
+  console.log(
+    '%c\u25b2 ' + eventName,
+    'background:#111111;color:#ceff00;padding:3px 9px;border-radius:4px;font-weight:700;',
+    props
+  );
+  /* event_time is deliberately not sent: Amplitude timestamps on ingest. */
+  if (window.amplitude && typeof window.amplitude.track === 'function') {
+    window.amplitude.track(eventName, props);
+  }
+  return payload;
+}
+
+window.__amplitude = {
+  events: ANALYTICS_LOG,
+  funnel() {
+    console.table(ANALYTICS_LOG.map((e, i) => ({
+      '#': i + 1,
+      event: e.event_name,
+      add_method: e.add_method || '',
+      size: e.size || '',
+      product: e.product_name || ''
+    })));
+    return ANALYTICS_LOG.length + ' events captured';
+  },
+  reset() { ANALYTICS_LOG.length = 0; return 'analytics log cleared'; }
+};
+
+/* ---------- Bag ---------- */
+const bag = new Map();
+const bagItemsEl = document.getElementById('bag-items');
+const bagCountEl = document.getElementById('bag-count');
+const bagSubtotalEl = document.getElementById('bag-subtotal');
+const bagDrawer = document.getElementById('bag-drawer');
+const drawerScrim = document.getElementById('drawer-scrim');
+
+function renderBag() {
+  const entries = [...bag.values()];
+  const units = entries.reduce((n, e) => n + e.qty, 0);
+  const subtotal = entries.reduce((n, e) => n + e.qty * e.product.price, 0);
+
+  bagCountEl.textContent = units;
+  bagCountEl.hidden = units === 0;
+  bagSubtotalEl.textContent = gbp(subtotal);
+
+  bagItemsEl.innerHTML = entries.length
+    ? entries.map(({ product: p, qty, size }) => `
+      <div class="bag-item">
+        <img src="${p.img}" alt="${p.name}" />
+        <div>
+          <h4>${p.name}</h4>
+          <p>${p.sub}</p>
+          <p>${size ? 'Size ' + size : '<span class="no-size">Size not selected</span>'} &nbsp;·&nbsp; ${gbp(p.price)}</p>
+          <div class="line">
+            <div class="qty">
+              <button data-qty="${p.id}" data-delta="-1" aria-label="Decrease quantity">−</button>
+              <span>${qty}</span>
+              <button data-qty="${p.id}" data-delta="1" aria-label="Increase quantity">+</button>
+            </div>
+            <button class="remove" data-remove="${p.id}">Remove</button>
+          </div>
+        </div>
+      </div>`).join('')
+    : '<p class="drawer-empty">There are no items in your bag.</p>';
+}
+
+function openBag() {
+  bagDrawer.hidden = false;
+  drawerScrim.hidden = false;
+  document.body.style.overflow = 'hidden';
+  track('Cart Viewed', Object.assign({ entry_point: 'header_bag' }, bagSnapshot()));
+}
+function closeBag() {
+  bagDrawer.hidden = true;
+  drawerScrim.hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('bag-btn').addEventListener('click', openBag);
+document.getElementById('bag-close').addEventListener('click', closeBag);
+document.getElementById('continue-btn').addEventListener('click', closeBag);
+drawerScrim.addEventListener('click', closeBag);
+document.getElementById('checkout-btn').addEventListener('click', () => {
+  if (!bag.size) return toast('Your bag is empty.');
+  closeBag();
+  toast('Checkout is not available in this mockup.');
+});
+
+/* ---------- Favourites ---------- */
+const favs = new Set();
+const favCountEl = document.getElementById('fav-count');
+
+function renderFavs() {
+  favCountEl.textContent = favs.size;
+  favCountEl.hidden = favs.size === 0;
+  document.querySelectorAll('[data-fav]').forEach(btn => {
+    btn.classList.toggle('on', favs.has(btn.dataset.fav));
+  });
+}
+
+document.getElementById('fav-btn').addEventListener('click', () => {
+  toast(favs.size ? `${favs.size} item${favs.size > 1 ? 's' : ''} in your favourites.` : 'No favourites yet.');
+});
+
+/* ---------- Delegated card actions ---------- */
+document.addEventListener('click', e => {
+  const add = e.target.closest('[data-add]');
+  if (add) {
+    const p = PRODUCTS.find(x => x.id === add.dataset.add);
+    const source = add.dataset.source || 'product_card';
+
+    /* A typeahead result reuses this handler, so selecting one drops the
+       product straight into the bag with no size chosen. The events below
+       record that faithfully: destination and size are how the problem
+       shows up in the data. See the Figma flow for the intended journey. */
+    if (source === 'search_typeahead') {
+      track('Search Result Selected', {
+        search_query: add.dataset.query,
+        result_position: Number(add.dataset.position),
+        search_result_count: Number(add.dataset.count),
+        product_id: p.id,
+        product_name: p.name,
+        destination: 'added_to_bag_directly'
+      });
+    }
+
+    const entry = bag.get(p.id) || { product: p, qty: 0, size: null };
+    entry.qty += 1;
+    bag.set(p.id, entry);
+    renderBag();
+
+    const size = entry.size || 'Not selected';
+    track('Product Added', Object.assign({
+      add_method: source,
+      product_id: p.id,
+      product_name: p.name,
+      product_price_gbp: p.price,
+      size: size,
+      quantity: 1,
+      product_engagement: [{
+        product_id: p.id,
+        product_name: p.name,
+        product_price_gbp: p.price,
+        quantity: 1,
+        size: size
+      }]
+    }, bagSnapshot()));
+
+    toast(`${p.name} added to bag.`);
+    return;
+  }
+
+  const fav = e.target.closest('[data-fav]');
+  if (fav) {
+    favs.has(fav.dataset.fav) ? favs.delete(fav.dataset.fav) : favs.add(fav.dataset.fav);
+    renderFavs();
+    return;
+  }
+
+  const qty = e.target.closest('[data-qty]');
+  if (qty) {
+    const entry = bag.get(qty.dataset.qty);
+    const delta = Number(qty.dataset.delta);
+    const previous = entry.qty;
+    entry.qty += delta;
+
+    if (entry.qty < 1) {
+      bag.delete(entry.product.id);
+      renderBag();
+      track('Product Removed', Object.assign({
+        product_id: entry.product.id,
+        product_name: entry.product.name,
+        quantity: previous,
+        removal_source: 'quantity_stepper'
+      }, bagSnapshot()));
+      return;
+    }
+
+    renderBag();
+    track('Product Quantity Changed', Object.assign({
+      product_id: entry.product.id,
+      product_name: entry.product.name,
+      previous_quantity: previous,
+      new_quantity: entry.qty,
+      change_direction: delta > 0 ? 'increase' : 'decrease'
+    }, bagSnapshot()));
+    return;
+  }
+
+  const rm = e.target.closest('[data-remove]');
+  if (rm) {
+    const removed = bag.get(rm.dataset.remove);
+    bag.delete(rm.dataset.remove);
+    renderBag();
+    if (removed) {
+      track('Product Removed', Object.assign({
+        product_id: removed.product.id,
+        product_name: removed.product.name,
+        quantity: removed.qty,
+        removal_source: 'bag_drawer'
+      }, bagSnapshot()));
+    }
+    return;
+  }
+});
+
+/* ---------- Search suggestions ---------- */
+const searchInput = document.getElementById('search-input');
+const suggestEl = document.getElementById('search-suggest');
+
+const escAttr = s => s.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+let searchDebounce;
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { suggestEl.hidden = true; return; }
+
+  const hits = PRODUCTS
+    .filter(p => (p.name + ' ' + p.sub).toLowerCase().includes(q))
+    .slice(0, 6);
+
+  suggestEl.innerHTML = hits.length
+    ? hits.map((p, i) => `<button data-add="${p.id}" data-source="search_typeahead" data-query="${escAttr(q)}" data-position="${i + 1}" data-count="${hits.length}">${p.name} — ${gbp(p.price)}</button>`).join('')
+    : '<button disabled>No results</button>';
+  suggestEl.hidden = false;
+
+  /* Debounced to the settled query: one Search Performed per search,
+     not one per keystroke. */
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => {
+    track('Search Performed', {
+      search_query: q,
+      search_type: 'typeahead',
+      search_surface: 'header',
+      search_result_count: hits.length,
+      is_zero_results: hits.length === 0
+    });
+  }, 450);
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search')) suggestEl.hidden = true;
+});
+
+/* ---------- Auth modal ---------- */
+const modalScrim = document.getElementById('modal-scrim');
+const modalTitle = document.getElementById('modal-title');
+
+document.querySelectorAll('[data-modal-open]').forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    modalTitle.textContent = el.dataset.modalOpen === 'join'
+      ? 'Become a Nike Member.'
+      : 'Enter your email to join us or sign in.';
+    modalScrim.hidden = false;
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeModal() {
+  modalScrim.hidden = true;
+  document.body.style.overflow = '';
+}
+document.getElementById('modal-close').addEventListener('click', closeModal);
+modalScrim.addEventListener('click', e => { if (e.target === modalScrim) closeModal(); });
+document.getElementById('auth-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('auth-email').value;
+  closeModal();
+  toast(`Welcome, ${email.split('@')[0]}. Free delivery unlocked.`);
+});
+
+/* ---------- Escape closes everything ---------- */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!modalScrim.hidden) closeModal();
+  if (!bagDrawer.hidden) closeBag();
+  suggestEl.hidden = true;
+});
+
+/* Presenter fallback for the Figma session: ?card=editorial|commerce|premium|playful
+   previews a card direction without waiting on the agent. */
+const cardTheme = new URLSearchParams(location.search).get('card');
+if (cardTheme) document.documentElement.dataset.cardTheme = cardTheme;
+
+renderBag();
+renderFavs();
+</script>
+</body>
+</html>
