@@ -12,7 +12,7 @@
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 
 <!-- Amplitude Unified SDK (CDN) -->
-<script src="https://cdn.amplitude.com/script/e06fdfface9a81322f7a2bdaa2084942.js"></script>
+<script src="https://cdn.amplitude.com/script/APIKEY"></script>
 <script>
   window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
 
@@ -20,7 +20,7 @@
      the first call wins, the later config is discarded, and nothing is
      logged to warn you. The CDN loader above is keyed to this project, so
      the key here must match it. */
-  window.amplitude.init('e06fdfface9a81322f7a2bdaa2084942', {
+  window.amplitude.init('APIKEY', {
     fetchRemoteConfig: true,           // remote SDK config from Amplitude
     autocapture: {
       attribution: true,               // UTM / referrer attribution events
